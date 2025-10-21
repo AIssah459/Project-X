@@ -102,13 +102,33 @@ const authController = {
         }
     },
 
+    logoutPost: async (req, res) => {
+        console.log('\n[LOGOUT] Received logout request');
+
+        const refreshToken = jwt.sign(
+                {'username': req.username},
+                process.env.REFRESH_TOKEN_SECRET,
+                {expiresIn: '7d'}
+            );
+
+        await res.cookie('jwt', refreshToken, {
+                                                        httpOnly: true,
+                                                        maxAge: 1,
+                                                        path: '/',
+                                                        sameSite: 'Lax',
+                                                        secure: false
+                                                    });
+        console.log('\tSuccessfully logged out');
+        return res.status(200).json({success: true, 'message': 'Logout successful!'});
+    },
+
     refreshPost : async (req, res) => {
         console.log('\n[REFRESH] Received token refresh request');
         const cookies = req.cookies;
 
         if(!cookies?.jwt) {
             console.log('\tNo refresh token cookie found');
-            return res.status(401).json({message: 'Unauthorized'});
+            return res.status(403).json({message: 'Unauthorized'});
         }
 
         const refreshToken = cookies.jwt;

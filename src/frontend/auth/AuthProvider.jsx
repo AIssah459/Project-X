@@ -28,7 +28,6 @@ const AuthProvider = ({ children }) => {
     useLayoutEffect(() => {
         const apiInterceptor = axios.interceptors.response.use((config) => {
             config.headers['Authorization'] = !config._retry && auth? `Bearer ${auth}` : config.headers['Authorization'];
-            console.log(config);
             return config;
         });
         return () => {
@@ -41,8 +40,6 @@ const AuthProvider = ({ children }) => {
             response => response,
             async (error) => {
                 const originalRequest = error.config;
-                console.log(error.response.status);
-                console.log(error.response);
                 if (error.response.status === 401 && error.response.data.message === 'Unauthorized') {
                     try {
                         const response = await axios.post('/auth/refresh', {
@@ -55,6 +52,7 @@ const AuthProvider = ({ children }) => {
                         return axios(originalRequest);
                     } catch {
                         setAuth(null);
+                        console.log('No refresh token');
                         navigate('/login');
                     }
                 }

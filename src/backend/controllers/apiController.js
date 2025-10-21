@@ -6,6 +6,10 @@ dotenv.config({path: '../../.env'});
 const apiController = {
     getEvents: async (req, res) => {
 
+        if(!req.cookies) {
+            return null;
+        }
+
         console.log('[EVENTS] Events requested');
         const events = await Event.find({});
         console.log(events);
