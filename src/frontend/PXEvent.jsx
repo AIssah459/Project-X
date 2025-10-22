@@ -1,5 +1,6 @@
 class PXEvent{
-    constructor(title, img='') {
+    constructor(title, id, img='') {
+        this.id = id;
         this.title = title;
         this.img = img;
     }

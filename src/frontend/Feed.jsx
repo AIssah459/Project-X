@@ -2,6 +2,7 @@ import axios from 'axios';
 import PXEvent from './PXEvent.jsx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Feed.css'
 
 
 const Feed = (props) => {
@@ -9,24 +10,28 @@ const Feed = (props) => {
     const navigate = useNavigate();
 
     const [PXEvents, setPXEvents] = useState([]);
-    // for(let i = 1; i < 11; i++) {
-    //     PXEvents.push(new PXEvent(`Event ${i}`));
-    // }
-
+    const [eventIDs, setEventIDs] = useState([]);
     useEffect(() => {
         const addPXEvent = (event) => {
             setPXEvents(PXEvents => [...PXEvents, event]);
         };
 
+        const addEventID = (id) => {
+            setEventIDs(eventIDs => [...eventIDs, id]);
+        }
+
         const loadEvents = async () => {
             //call to API to get feed
             const res = await axios.get('/api/events', { withCredentials: true });
             res.data.forEach(event => {
-                addPXEvent(new PXEvent(event.title, event.img));
+                if(!eventIDs.includes(event.id)){
+                    addEventID(event.id);
+                    addPXEvent(new PXEvent(event.title, event.id, event.img));
+                }
             });
         }
         loadEvents();
-    }, []);
+    }, [eventIDs]);
 
     const logout = async () => {
         await axios.post('/auth/logout', {username: props.user}, {withCredentials: true});
@@ -47,8 +52,11 @@ const Feed = (props) => {
             <p id='header-text' className='fs-1'>{props.user}'s Feed</p>
             <p onClick={logout}>Logout</p>
           </div>
-          <div id='page-body' className='rounded solid-black w-75 h-100 position-relative top-0 start-50 translate-middle-x'>
+          <div id='page-body' className='rounded solid-black w-75 mb-2 h-100 position-relative top-0 start-50 translate-middle-x'>
           {displayEvents()}
+          </div>
+          <div onClick={() => navigate('/postevent')} id='footer' className='w-25 position-relative mt-4 start-50 translate-middle-x'>
+            <p id='post-event'>Post an Event</p>
           </div>
         </div>
     );

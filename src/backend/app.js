@@ -5,6 +5,7 @@ import routes from './routes/routes.js'
 import cors from 'cors';
 import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
+//import multer from 'multer';
 
 dotenv.config({path: '../../.env'});
 const app = express();
@@ -18,8 +19,10 @@ app.use(cors({
   allowedHeaders: ['Content-Type','Authorization']
 }));
 
+
 app.use(express.json());
 app.use(cookieParser());
+
 app.use('/auth', authRoutes);
 app.use('/api', routes);
 

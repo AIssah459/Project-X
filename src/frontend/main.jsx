@@ -7,11 +7,15 @@ import App from './App.jsx';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
 import NotFound from './NotFound.jsx';
+import PostEvent from './PostEvent.jsx';
+import RequireAuth from './auth/RequireAuth.jsx';
+import AuthProvider from './auth/AuthProvider.jsx';
 
 const router = createBrowserRouter([
   {path: '/', element: <App />},
   {path: '/login', element: <Login />},
   {path: '/signup', element: <Signup />},
+  {path: '/postevent', element: <AuthProvider><RequireAuth><PostEvent /></RequireAuth></AuthProvider>},
   {path:'*', element: <NotFound />},
 ]);
 

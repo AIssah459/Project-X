@@ -1,13 +1,12 @@
-# Project X
+# React + Vite
 
-Project for my portfolio made using MERN stack
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Features
+Currently, two official plugins are available:
 
-- React App made with Vite
-- Authentication API using Express and JWT
-- API used to pull events from MongoDB database
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-<img width="1104" height="718" alt="image" src="https://github.com/user-attachments/assets/f0db8486-ae46-4abb-994a-0793eb884fbc" />
+## Expanding the ESLint configuration
 
-<img width="1104" height="740" alt="image" src="https://github.com/user-attachments/assets/be2f7a22-0e44-427e-98c0-3b6c255ec121" />
+If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
