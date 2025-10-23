@@ -1,6 +1,7 @@
 import Event from "../config/models/Event.js";
 import dotenv from "dotenv";
 import jwt from 'jsonwebtoken';
+import fs from 'fs';
 
 dotenv.config({path: '../../.env'});
 
@@ -11,7 +12,7 @@ const apiController = {
             return null;
         }
 
-        console.log('[EVENTS] Events requested');
+        console.log('\n[EVENTS] Events requested');
         const events = await Event.find({});
         if (!events) {
             return res.status(404).json({message: 'No events to display'});
@@ -32,7 +33,7 @@ const apiController = {
             return null;
         }
 
-        console.log('[EVENTS] User attempting to post an event');
+        console.log('\n[EVENTS] User attempting to post an event');
         
         const eventTitle = req.body.title;
         const postedBy = req.body.postedBy;
@@ -91,7 +92,16 @@ const apiController = {
                         console.log('\tProject X will never die!');
                         return res.status(200).json({success: false, message: 'Can\'t delete that event!'})
                     }
+                    const eventInfo = await Event.findById(eventID);
                     await Event.findByIdAndDelete(eventID);
+                    const filePath = `../../public/images/${eventInfo.img}`; // Adjust the path to your file location
+    
+                    fs.unlink(filePath, (err) => {
+                        if (err) {
+                            console.error('\tError deleting file:', err);
+                        }
+                        console.log('\tFile deleted successfully!');
+                    });
                     res.status(200).json({success:true, message: 'Event deleted'});
                     console.log('\tEvent deleted');
                 }

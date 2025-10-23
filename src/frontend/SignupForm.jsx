@@ -3,7 +3,6 @@ import axios from 'axios';
 import {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { withCookies } from 'react-cookie';
 
 const SignupForm = () => {
     let navigate = useNavigate();
