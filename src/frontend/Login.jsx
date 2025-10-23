@@ -1,8 +1,15 @@
 import './Login.css';
 import LoginForm from './LoginForm.jsx';
+import useAuth from './auth/useAuth.jsx';
+import { useNavigate } from 'react-router-dom';
 import "@fontsource/open-sans";
 
 const Login = () => {
+    const { isLoggedIn } = useAuth();
+    const navigate = useNavigate();
+    if(isLoggedIn) {
+      navigate('/');
+    }
     return (
         <div className="gradient-background">
         { /* Project X Logo */ }
