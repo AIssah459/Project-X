@@ -56,6 +56,8 @@ const apiController = {
         }
     },
     deleteEvents: async (req, res) => {
+        const PROJECT_X_EVENT_ID = '68fa954d75a9855d364d959f';
+
        if(!req.cookies) {
             return null;
         }
@@ -85,6 +87,10 @@ const apiController = {
                 }
                 try {
                     console.log('\tEvent to be deleted: ' + eventID);
+                    if(eventID == PROJECT_X_EVENT_ID) {
+                        console.log('\tProject X will never die!');
+                        return res.status(200).json({success: false, message: 'Can\'t delete that event!'})
+                    }
                     await Event.findByIdAndDelete(eventID);
                     res.status(200).json({success:true, message: 'Event deleted'});
                     console.log('\tEvent deleted');
@@ -95,6 +101,34 @@ const apiController = {
                 }
             }
         ); 
+    },
+    updateEvents: async (req, res) => {
+        console.log('\n[EVENTS] User attempting to edit an event');
+        const eventID = req.params.id;
+
+        const foundEvent = await Event.findById(eventID);
+        if(!foundEvent) {
+            
+            return res.status(404);
+	    }
+
+        const eventConfig = {
+            title: req.body.title,
+        }
+
+        if(req.body.file) {
+            eventConfig.img = req.body.file;
+        }
+
+        try {
+            await Event.findByIdAndUpdate(eventID, eventConfig, {new:true});
+            console.log("Event successfully updated");
+            return res.status(200).json({ success: true });
+        }
+        catch {
+            console.log('Internal server error'); 
+            return res.status(500).json({ success: false, message: 'Failed to update event'}); 
+        };
     }
 }
 

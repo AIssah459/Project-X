@@ -1,40 +1,49 @@
 import {useDropzone} from 'react-dropzone';
 import {useCallback, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './PostEvent.css';
 
-const PostEvent = (props) => {
+const EditEvent = (props) => {
     const [eventTitle, setEventTitle] = useState('');
-     const [errMsg, setErrMsg] = useState('');
-
+    const [errMsg, setErrMsg] = useState('');
+    const [formData, setFormData] = useState(new FormData);
     const navigate = useNavigate();
 
+    const location = useLocation();
+
+    const event = location.state?.event || {};
+    const eventToEdit = event;
+
     const onDrop = useCallback(async (acceptedFiles) => {
-        const formData = new FormData();
-        if(eventTitle.length < 1) {
-            alert('Enter a title for your event!');
-        }
-        else {
-            formData.append('postedBy', props.user);
-            formData.append('title', eventTitle);
-            console.log(acceptedFiles);
-            acceptedFiles.forEach(file => {
+        if(acceptedFiles){
+                acceptedFiles.forEach(file => {
                 formData.append('file', file);
             });
-            const res = await axios.post('/api/events', formData, {withCredentials: true});
-            if(res.data.success) {
-                navigate('/');
-            }
-            else {
-                 setErrMsg(res.data.message);
-            }
         }
-    }, [eventTitle, navigate, props.user]);
+        
+    }, [formData]);
 
     const goBack = useCallback(() => {
         navigate('/');
     }, [navigate]);
+
+    const submitEdit = useCallback(async () => {
+        if(eventTitle.length >= 1)
+            formData.append('title', eventTitle);
+        else
+            formData.append('title', eventToEdit.title);
+
+        formData.append('id', eventToEdit.id);
+
+        const res = await axios.put(`/api/events/${eventToEdit.id}`, formData, {withCredentials: true});
+        if(res.data.success) {
+            navigate('/');
+        }
+        else {
+                setErrMsg(res.data.message);
+        }
+    }, [navigate, formData, eventTitle, eventToEdit.title, eventToEdit.id])
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({multiple: false, onDrop});
     return (
@@ -47,7 +56,14 @@ const PostEvent = (props) => {
                     placeholder: 'Event title',
                     onChange: (e) => {setEventTitle(e.target.value)},
                 })} /> */}
-                <h2 className='mb-5'>Post your event</h2>
+                <h2 className='mb-5'>Edit your event</h2>
+
+                {/* Event to be edited */}
+                <div className='card text-white bg-secondary w-50 h-50 position-relative mb-5 my-5 top-10 start-50 translate-middle-x'>
+                    <p className='border-bottom border-dark'>{ eventToEdit.title }</p>
+                    <img src={`/images/${ eventToEdit.img }`}></img>
+                    <p>postedBy: {props.user}</p>
+                </div>
                 <div className="input-group mb-3 w-50 start-50 justify-content-center align-items-center translate-middle-x">
                     <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon3">Title</span>
@@ -62,12 +78,13 @@ const PostEvent = (props) => {
                 {
                     isDragActive ?
                     <p>Drop the files here ...</p> :
-                    <p>Drag and drop or click to upload the image for your event here</p>
+                    <p>Upload the image for your event here</p>
                 }
                 
             </div>
-            <div className='mt-3' >
-                <button onClick={goBack} className='btn btn-primary mb-3'>Go back</button>
+            <div className='d-flex mb-3 mt-3 start-50 justify-content-center align-items-center gap-5' >
+                <button onClick={goBack} className='btn btn-primary'>Go back</button>
+                <button onClick={submitEdit}className='btn btn-primary'>Submit</button>
             </div>
         </div>
          {/* Display error message */}
@@ -79,4 +96,4 @@ const PostEvent = (props) => {
     )
 }
 
-export default PostEvent;
+export default EditEvent;

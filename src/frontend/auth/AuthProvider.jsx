@@ -8,6 +8,7 @@ const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [auth, setAuth] = useState({ user: null, authenticated: false });
     const [user, setUser] = useState();
+    const [uid, setUID] = useState('');
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -47,6 +48,7 @@ const AuthProvider = ({ children }) => {
                         });
                         const res = await response.data;
                         setAuth(res.data.accessToken);
+                        setUID(res.data.uid);
                         originalRequest.headers['Authorization'] = `Bearer ${res.data.accessToken}`;
                         originalRequest._retry = true;
                         return axios(originalRequest);
@@ -62,11 +64,11 @@ const AuthProvider = ({ children }) => {
         return () => {
             axios.interceptors.response.eject(refreshInterceptor);
         };
-    }, [navigate]);
+    }, [navigate, uid]);
 
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth , user, setUser}}>
+    <AuthContext.Provider value={{ auth, setAuth , user, setUser, uid, setUID }}>
       {children}
     </AuthContext.Provider>
   );

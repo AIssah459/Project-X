@@ -3,6 +3,7 @@ import axios from 'axios';
 import {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { withCookies } from 'react-cookie';
 
 const SignupForm = () => {
     let navigate = useNavigate();
@@ -17,7 +18,7 @@ const SignupForm = () => {
     // Function to handle form submission
     const submitFunc = async (e) => {
         e.preventDefault();
-        const url = 'http://localhost:8080/signup';
+        const url = '/auth/signup';
         const reqBody = {
             username: username,
             password: password,
@@ -27,7 +28,7 @@ const SignupForm = () => {
             'Content-Type': 'application/json'
         };
 
-        const res = await axios.post(url, reqBody, {headers: headers});
+        const res = await axios.post(url, reqBody, {headers: headers}, {withCredentials: false});
         
         setUsername('');
         setPassword('');

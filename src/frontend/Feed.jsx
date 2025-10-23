@@ -2,7 +2,7 @@ import axios from 'axios';
 import PXEvent from './PXEvent.jsx';
 import EventDeleteButton from './EventDeleteButton.jsx';
 import { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './Feed.css'
 
 
@@ -40,31 +40,24 @@ const Feed = (props) => {
         navigate('/login');
     }, [navigate, props.user]);
 
-    // const deleteEvent = useCallback(async (e) => {
-    //     const eventID = e.target.id;
-    //     console.log(e);
-    //     console.log(eventID);
-    //     const res = await axios.delete('/api/events', {event: eventID}, {withCredentials:true});
-    //     if(res.data.success) {
-    //         navigate('/');
-    //     }
-    //     else {
-    //         alert('Failed to delete event');
-    //     }
-    // }, [navigate]);
+    const handleEdit = useCallback((event) => {
+        console.log("Navigating with event:", event);
+        navigate('/editevent', { state: { event } });
+  }, [navigate]);
+ 
     const displayEvents = useCallback(() => {
         return PXEvents.map((event, index) => (
-        <div key={index} className='card text-white bg-secondary w-50 h-50 position-relative mb-5 my-5 top-10 start-50 translate-middle-x'>
-            <p className='border-bottom border-dark'>{event.title}</p>
-            <img src={`/images/${event.img}`}></img>
-            {event.postedBy == props.user ? <div className='d-flex gap-3 mt-2 px-2'>
-                <button id={event.id} className='btn btn-primary'>Edit</button>
-                <EventDeleteButton id={event.id}></EventDeleteButton>
-                <div className='position-relative start-50 translate-middle-x'><p>posted by: {event.postedBy}</p></div>
-            </div> : <p>posted by: {event.postedBy}</p>}   
+        <div key={ index } className='card text-white bg-secondary w-50 h-50 position-relative mt-5 mb-5 my-5 top-10 start-50 translate-middle-x'>
+            <p className='border-bottom border-dark'>{ event.title }</p>
+            <img src={`/images/${ event.img }`}></img>
+            { event.postedBy == props.user ? <div className='d-flex gap-3 mt-2 px-2'>
+                <button  className='btn btn-primary' onClick={() => handleEdit(event)}>Edit</button>
+                <EventDeleteButton id={ event.id }></EventDeleteButton>
+                <div className='position-relative start-50 translate-middle-x'><p>posted by: { event.postedBy }</p></div>
+            </div> : <p>posted by: { event.postedBy }</p>}   
         </div>
         ));
-    }, [PXEvents, props.user]);
+    }, [PXEvents, props.user, handleEdit]);
 
     return (
         <div id='bg' className='w-100 h-100 position-absolute top-0 start-0'>

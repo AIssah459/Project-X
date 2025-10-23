@@ -1,8 +1,18 @@
 import { Router } from 'express';
 import apiController from '../controllers/apiController.js'
 import multer from 'multer';
+import cors from 'cors';
 
 const router = Router();
+
+const corsOptions = {
+  origin: ['http://localhost:5173','http://localhost:8080'],
+  //origin: true,
+  credentials: true,
+  methods: ['GET','POST','OPTIONS','DELETE'],
+  allowedHeaders: ['Content-Type','Authorization']
+};
+
 
 const storage = multer.diskStorage({
             destination: (req, file, cb) => {
@@ -22,8 +32,9 @@ const upload = multer({ storage: storage,
                         }
     });
 
-router.get('/events', apiController.getEvents);
-router.post('/events', upload.single('file'),apiController.postEvents);
-router.delete('/events/:id', apiController.deleteEvents);
+router.get('/events', cors(corsOptions), apiController.getEvents);
+router.post('/events', cors(corsOptions), upload.single('file'), apiController.postEvents);
+router.delete('/events/:id', cors(corsOptions), apiController.deleteEvents);
+router.put('/events/:id', cors(corsOptions), upload.single('file'), apiController.updateEvents);
 
 export default router;

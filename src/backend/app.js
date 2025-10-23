@@ -11,16 +11,17 @@ dotenv.config({path: '../../.env'});
 const app = express();
 const PORT = 8080;
 
-app.use(cors({
-  origin: ['http://localhost:5173','http://localhost:8080'],
-  //origin: true,
-  credentials: true,
-  methods: ['GET','POST','OPTIONS','DELETE'],
-  allowedHeaders: ['Content-Type','Authorization']
-}));
+// app.use(cors({
+//   origin: ['http://localhost:5173','http://localhost:8080'],
+//   //origin: true,
+//   credentials: true,
+//   methods: ['GET','POST','OPTIONS','DELETE'],
+//   allowedHeaders: ['Content-Type','Authorization']
+// }));
 
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/auth', authRoutes);

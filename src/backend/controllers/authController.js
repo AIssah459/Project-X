@@ -95,7 +95,7 @@ const authController = {
                                                         secure: false
                                                     });
             console.log('\tSent refresh token cookie');
-            return res.status(200).json({success: true, 'message': 'Login successful!', 'accessToken': accessToken});
+            return res.status(200).json({success: true, 'message': 'Login successful!', 'accessToken': accessToken, uid: foundUser._id});
         }
         else {
             return res.status(401).json({success: false, 'message': 'Incorrect password'});
@@ -137,7 +137,7 @@ const authController = {
         jwt.verify(
             refreshToken,
             process.env.REFRESH_TOKEN_SECRET,
-            (err, decoded) => {
+            async (err, decoded) => {
                 if(err){
                     console.log('\tRefresh token verification failed');
                     return res.status(403).json({message: 'Forbidden'});
@@ -148,7 +148,9 @@ const authController = {
                     process.env.ACCESS_TOKEN_SECRET,
                     {expiresIn: '1h'}
                 );
-                return res.status(200).json({authenticated: true, message: 'Token refreshed', data: {accessToken: accessToken}});
+                const user = await User.findOne({username: decoded.username});
+                const uid = user.id;
+                return res.status(200).json({authenticated: true, message: 'Token refreshed', data: {accessToken: accessToken, uid: uid}});
             }
         );
     },

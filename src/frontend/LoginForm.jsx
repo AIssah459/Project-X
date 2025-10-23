@@ -1,7 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import {useState} from 'react';
+import { useState, useCallback } from 'react';
 import { Link , useNavigate } from 'react-router-dom';
+import useAuth from './auth/useAuth.jsx';
 
 const LoginForm = () => {
     const navigate = useNavigate();
@@ -10,8 +11,12 @@ const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    console.log(useAuth());
+
+    const { setUID } = useAuth();
+
     // Function to handle form submission
-    const submitFunc = async (e) => {
+    const submitFunc = useCallback(async (e) => {
         e.preventDefault();
         const url = '/auth/login';
         const reqBody = {
@@ -27,10 +32,13 @@ const LoginForm = () => {
         if(res.data.success) {
             navigate('/');
         }
+
+        setUID(res.data.uid);
+
         setUsername('');
         setPassword('');
         setResMsg(res.data.message);
-}
+}, [navigate, username, password, setUID]);
 
     return (
         <>
