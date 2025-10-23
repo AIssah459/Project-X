@@ -13,8 +13,22 @@ const apiController = {
         }
 
         console.log('\n[EVENTS] Events requested');
-        const events = await Event.find({});
-        if (!events) {
+
+        let events = [];
+
+        console.log(req.query.postedBy);
+
+        if(req.query.postedBy) {
+            console.log('We got a posted by!');
+            const username = req.query.postedBy.trim();
+            events = await Event.find({postedBy: username});
+        }
+        else {
+            console.log('No specified user');
+            events = await Event.find({});
+        }
+        
+        if (!events || (events.length < 1)) {
             return res.status(404).json({message: 'No events to display'});
         }
         const eventsJSON = [];

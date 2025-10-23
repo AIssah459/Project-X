@@ -9,6 +9,7 @@ import Signup from './Signup.jsx';
 import NotFound from './NotFound.jsx';
 import PostEvent from './PostEvent.jsx';
 import EditEvent from './EditEvent.jsx';
+import Profile from './Profile.jsx';
 import RequireAuth from './auth/RequireAuth.jsx';
 import AuthProvider from './auth/AuthProvider.jsx';
 
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
   {path: '/signup', element: <Signup />},
   {path: '/postevent', element: <AuthProvider><RequireAuth>{(user) => <PostEvent user={user} />}</RequireAuth></AuthProvider>},
   {path: '/editevent', element: <AuthProvider><RequireAuth>{(user) => <EditEvent user={user} />}</RequireAuth></AuthProvider>},
+  {path: '/profile', element: <AuthProvider><RequireAuth>{(user) => <Profile user={user} />}</RequireAuth></AuthProvider>},
   {path:'*', element: <NotFound />},
 ]);
 
