@@ -15,7 +15,7 @@ const router = createBrowserRouter([
   {path: '/', element: <App />},
   {path: '/login', element: <Login />},
   {path: '/signup', element: <Signup />},
-  {path: '/postevent', element: <AuthProvider><RequireAuth><PostEvent /></RequireAuth></AuthProvider>},
+  {path: '/postevent', element: <AuthProvider><RequireAuth>{(user) => <PostEvent user={user} />}</RequireAuth></AuthProvider>},
   {path:'*', element: <NotFound />},
 ]);
 

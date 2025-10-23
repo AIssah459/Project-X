@@ -11,7 +11,11 @@ const mySchema = mongoose.Schema({
     img: {
         type: String,
         required: true
-    }
+    },
+	postedBy: {
+		type: String,
+		required: true
+	}
 }, {
 	timestamps: true // Adds createdAt, updatedAt fields
 });

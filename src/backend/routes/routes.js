@@ -24,5 +24,6 @@ const upload = multer({ storage: storage,
 
 router.get('/events', apiController.getEvents);
 router.post('/events', upload.single('file'),apiController.postEvents);
+router.delete('/events/:id', apiController.deleteEvents);
 
 export default router;
