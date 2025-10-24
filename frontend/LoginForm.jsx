@@ -12,9 +12,10 @@ const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    console.log("API_BASE:", import.meta.env.VITE_API_BASE_URL);
     console.log(import.meta.env.VITE_API_BASE_URL);
     console.log(API_BASE);
-    alert(API_BASE);
+    alert("API_BASE:", import.meta.env.VITE_API_BASE_URL);
 
     const { setUID } = useAuth();
 
