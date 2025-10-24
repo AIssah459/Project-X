@@ -22,7 +22,7 @@ const LoginForm = () => {
     // Function to handle form submission
     const submitFunc = useCallback(async (e) => {
         e.preventDefault();
-        const url = `${API_BASE}/auth/login`;
+        const url = `https://project-x-api.up.railway.app/auth/login`;
         const reqBody = {
             username: username,
             password: password
@@ -41,7 +41,7 @@ const LoginForm = () => {
         setUsername('');
         setPassword('');
         setResMsg(res.data.message);
-}, [navigate, username, password, setUID, API_BASE]);
+}, [navigate, username, password, setUID]);
 
     return (
         <>

@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const response = await axios.post(`${API_BASE}/auth/checkauth`, {
+                const response = await axios.post(`https://project-x-api.up.railway.app/auth/checkauth`, {
                     withCredentials: true, // Include cookies
                 }, {headers: {'authorization': `Bearer ${auth}`}});
                 setAuth(response.data.accessToken);
@@ -45,7 +45,7 @@ const AuthProvider = ({ children }) => {
                 const originalRequest = error.config;
                 if (error.response.status === 401 && error.response.data.message === 'Unauthorized') {
                     try {
-                        const response = await axios.post(`${API_BASE}/auth/refresh`, {
+                        const response = await axios.post(`https://project-x-api.up.railway.app/auth/refresh`, {
                             withCredentials: true,
                         });
                         const res = await response.data;

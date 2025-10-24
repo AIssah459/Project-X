@@ -5,7 +5,7 @@ const EventDeleteButton = (props) => {
     const deleteEvent = useCallback(async () => {
         const eventID = props.id;
         //const payload = { eventID: eventID };
-        const res = await axios.delete(`${API_BASE}/api/events/${eventID}`, {withCredentials:true});
+        const res = await axios.delete(`https://project-x-api.up.railway.app/api/events/${eventID}`, {withCredentials:true});
         
         if(res.data.success === true) {
             console.log('navigate');
@@ -14,7 +14,7 @@ const EventDeleteButton = (props) => {
         else {
             alert('Failed to delete event');
         }
-    }, [API_BASE, props.id]);
+    }, [props.id]);
     return <button onClick={deleteEvent} className='btn btn-dark'>Delete</button>
 }
 

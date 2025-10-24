@@ -24,7 +24,7 @@ const Feed = (props) => {
 
         const loadEvents = async () => {
             //call to API to get feed
-            const res = await axios.get(`${API_BASE}/api/events`, { withCredentials: true });
+            const res = await axios.get(`https://project-x-api.up.railway.app/api/events`, { withCredentials: true });
             res.data.forEach(event => {
                 if(!eventIDs.includes(event.id)){
                     addEventID(event.id);
@@ -36,9 +36,9 @@ const Feed = (props) => {
     }, [eventIDs, API_BASE]);
 
     const logout = useCallback(async () => {
-        await axios.post(`${API_BASE}/auth/logout`, {username: props.user}, {withCredentials: true});
+        await axios.post(`https://project-x-api.up.railway.app/auth/logout`, {username: props.user}, {withCredentials: true});
         navigate('/login');
-    }, [navigate, props.user, API_BASE]);
+    }, [navigate, props.user]);
 
     const handleEdit = useCallback((event) => {
         console.log("Navigating with event:", event);
