@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 const SignupForm = () => {
     let navigate = useNavigate();
 
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
     const [resMsg, setResMsg] = useState('');
 
     const [username, setUsername] = useState('');
@@ -17,7 +19,7 @@ const SignupForm = () => {
     // Function to handle form submission
     const submitFunc = async (e) => {
         e.preventDefault();
-        const url = '/auth/signup';
+        const url = `${API_BASE}/auth/signup`;
         const reqBody = {
             username: username,
             password: password,

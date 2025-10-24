@@ -4,6 +4,7 @@ import PXEvent from './PXEvent';
 import axios from 'axios';
 
 const Profile = (props) => {
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
     const [PXEvents, setPXEvents] = useState([]);
     const location = useLocation();
@@ -33,7 +34,7 @@ const Profile = (props) => {
             else {
                 userToRequest = props.user;
             }
-            const res = await axios.get('/api/events', {params: {postedBy: userToRequest}}, {withCredentials: true });
+            const res = await axios.get(`${API_BASE}/api/events`, {params: {postedBy: userToRequest}}, {withCredentials: true });
             res.data.forEach(event => {
                 if(!eventIDs.includes(event.id) && event.postedBy == userToRequest){
                     addEventID(event.id);
@@ -43,12 +44,12 @@ const Profile = (props) => {
         
         }
         loadEvents();
-    }, [eventIDs, viewUser, props.user]);
+    }, [eventIDs, viewUser, props.user, API_BASE]);
 
      const logout = useCallback(async () => {
-        await axios.post('/auth/logout', {username: props.user}, {withCredentials: true});
+        await axios.post(`${API_BASE}/auth/logout`, {username: props.user}, {withCredentials: true});
         navigate('/login');
-    }, [navigate, props.user]);
+    }, [navigate, props.user, API_BASE]);
 
     
 

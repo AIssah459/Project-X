@@ -5,6 +5,7 @@ import { Link , useNavigate } from 'react-router-dom';
 import useAuth from './auth/useAuth.jsx';
 
 const LoginForm = () => {
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
     const [resMsg, setResMsg] = useState('');
 
@@ -18,7 +19,7 @@ const LoginForm = () => {
     // Function to handle form submission
     const submitFunc = useCallback(async (e) => {
         e.preventDefault();
-        const url = '/auth/login';
+        const url = `${API_BASE}/auth/login`;
         const reqBody = {
             username: username,
             password: password
@@ -38,7 +39,7 @@ const LoginForm = () => {
         setUsername('');
         setPassword('');
         setResMsg(res.data.message);
-}, [navigate, username, password, setUID]);
+}, [navigate, username, password, setUID, API_BASE]);
 
     return (
         <>
