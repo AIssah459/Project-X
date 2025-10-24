@@ -5,6 +5,7 @@ import axios from 'axios';
 import './PostEvent.css';
 
 const PostEvent = (props) => {
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
     const [eventTitle, setEventTitle] = useState('');
      const [errMsg, setErrMsg] = useState('');
 
@@ -22,7 +23,7 @@ const PostEvent = (props) => {
             acceptedFiles.forEach(file => {
                 formData.append('file', file);
             });
-            const res = await axios.post('/api/events', formData, {withCredentials: true});
+            const res = await axios.post(`https://project-x-api.up.railway.app/api/events`, formData, {withCredentials: true});
             if(res.data.success) {
                 navigate('/');
             }

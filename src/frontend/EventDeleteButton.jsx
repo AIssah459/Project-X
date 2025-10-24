@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import axios from 'axios';
 const EventDeleteButton = (props) => {
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
     const deleteEvent = useCallback(async () => {
         const eventID = props.id;
         //const payload = { eventID: eventID };
-        const res = await axios.delete(`/api/events/${eventID}`, {withCredentials:true});
+        const res = await axios.delete(`https://project-x-api.up.railway.app/api/events/${eventID}`, {withCredentials:true});
         
         if(res.data.success === true) {
             console.log('navigate');

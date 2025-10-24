@@ -5,20 +5,24 @@ import { Link , useNavigate } from 'react-router-dom';
 import useAuth from './auth/useAuth.jsx';
 
 const LoginForm = () => {
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
     const [resMsg, setResMsg] = useState('');
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    console.log(useAuth());
+    console.log("API_BASE:", import.meta.env.VITE_API_BASE_URL);
+    console.log(import.meta.env.VITE_API_BASE_URL);
+    console.log(API_BASE);
+    alert("API_BASE:", import.meta.env.VITE_API_BASE_URL);
 
     const { setUID } = useAuth();
 
     // Function to handle form submission
     const submitFunc = useCallback(async (e) => {
         e.preventDefault();
-        const url = '/auth/login';
+        const url = `https://project-x-api.up.railway.app/auth/login`;
         const reqBody = {
             username: username,
             password: password
@@ -26,7 +30,6 @@ const LoginForm = () => {
         const headers = {
             'Content-Type': 'application/json'
         };
-
         const res = await axios.post(url, reqBody, {headers: headers}, {withCredentials: true});
 
         if(res.data.success) {

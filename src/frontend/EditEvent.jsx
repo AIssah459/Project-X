@@ -10,6 +10,8 @@ const EditEvent = (props) => {
     const [formData, setFormData] = useState(new FormData);
     const navigate = useNavigate();
 
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
     const location = useLocation();
 
     const event = location.state?.event || {};
@@ -36,7 +38,7 @@ const EditEvent = (props) => {
 
         formData.append('id', eventToEdit.id);
 
-        const res = await axios.put(`/api/events/${eventToEdit.id}`, formData, {withCredentials: true});
+        const res = await axios.put(`https://project-x-api.up.railway.app/api/events/${eventToEdit.id}`, formData, {withCredentials: true});
         if(res.data.success) {
             navigate('/');
         }

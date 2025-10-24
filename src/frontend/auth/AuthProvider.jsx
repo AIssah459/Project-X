@@ -10,11 +10,12 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [uid, setUID] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const response = await axios.post('/auth/checkauth', {
+                const response = await axios.post(`https://project-x-api.up.railway.app/auth/checkauth`, {
                     withCredentials: true, // Include cookies
                 }, {headers: {'authorization': `Bearer ${auth}`}});
                 setAuth(response.data.accessToken);
@@ -25,7 +26,7 @@ const AuthProvider = ({ children }) => {
             }
         }
         checkAuth();
-    }, [auth, navigate]);
+    }, [auth, navigate, API_BASE]);
 
     useLayoutEffect(() => {
         const apiInterceptor = axios.interceptors.response.use((config) => {
@@ -44,7 +45,7 @@ const AuthProvider = ({ children }) => {
                 const originalRequest = error.config;
                 if (error.response.status === 401 && error.response.data.message === 'Unauthorized') {
                     try {
-                        const response = await axios.post('/auth/refresh', {
+                        const response = await axios.post(`https://project-x-api.up.railway.app/auth/refresh`, {
                             withCredentials: true,
                         });
                         const res = await response.data;
@@ -66,7 +67,7 @@ const AuthProvider = ({ children }) => {
         return () => {
             axios.interceptors.response.eject(refreshInterceptor);
         };
-    }, [navigate, uid]);
+    }, [navigate, uid, API_BASE]);
 
 
   return (

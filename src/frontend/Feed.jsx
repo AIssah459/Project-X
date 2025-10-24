@@ -9,7 +9,7 @@ import './Feed.css'
 const Feed = (props) => {
 
     const navigate = useNavigate();
-
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
     const [PXEvents, setPXEvents] = useState([]);
     const [eventIDs, setEventIDs] = useState([]);
 
@@ -24,7 +24,7 @@ const Feed = (props) => {
 
         const loadEvents = async () => {
             //call to API to get feed
-            const res = await axios.get('/api/events', { withCredentials: true });
+            const res = await axios.get(`https://project-x-api.up.railway.app/api/events`, { withCredentials: true });
             res.data.forEach(event => {
                 if(!eventIDs.includes(event.id)){
                     addEventID(event.id);
@@ -33,10 +33,10 @@ const Feed = (props) => {
             });
         }
         loadEvents();
-    }, [eventIDs]);
+    }, [eventIDs, API_BASE]);
 
     const logout = useCallback(async () => {
-        await axios.post('/auth/logout', {username: props.user}, {withCredentials: true});
+        await axios.post(`https://project-x-api.up.railway.app/auth/logout`, {username: props.user}, {withCredentials: true});
         navigate('/login');
     }, [navigate, props.user]);
 
