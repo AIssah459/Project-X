@@ -12,7 +12,8 @@ const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    console.log(useAuth());
+    console.log(API_BASE);
+    alert(API_BASE);
 
     const { setUID } = useAuth();
 
@@ -27,7 +28,6 @@ const LoginForm = () => {
         const headers = {
             'Content-Type': 'application/json'
         };
-        alert(API_BASE);
         const res = await axios.post(url, reqBody, {headers: headers, withCredentials: true});
 
         if(res.data.success) {
