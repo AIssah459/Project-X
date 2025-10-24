@@ -12,6 +12,7 @@ const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    console.log(import.meta.env.VITE_API_BASE_URL);
     console.log(API_BASE);
     alert(API_BASE);
 
