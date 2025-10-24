@@ -27,7 +27,7 @@ const LoginForm = () => {
         const headers = {
             'Content-Type': 'application/json'
         };
-
+        console.log(API_BASE);
         const res = await axios.post(url, reqBody, {headers: headers, withCredentials: true});
 
         if(res.data.success) {
