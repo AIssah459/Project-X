@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const response = await axios.post(`https://${API_BASE}/auth/checkauth`, {
+                const response = await axios.post(`${API_BASE}/auth/checkauth`, {
                     withCredentials: true, // Include cookies
                 }, {headers: {'authorization': `Bearer ${auth}`}});
                 setAuth(response.data.accessToken);
