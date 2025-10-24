@@ -30,7 +30,7 @@ const LoginForm = () => {
         const headers = {
             'Content-Type': 'application/json'
         };
-        const res = await axios.post(url, reqBody, {headers: headers, withCredentials: true});
+        const res = await axios.post(url, reqBody, {headers: headers}, {withCredentials: true});
 
         if(res.data.success) {
             navigate('/');
