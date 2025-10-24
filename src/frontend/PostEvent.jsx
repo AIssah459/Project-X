@@ -23,7 +23,7 @@ const PostEvent = (props) => {
             acceptedFiles.forEach(file => {
                 formData.append('file', file);
             });
-            const res = await axios.post(`https://project-x-api.up.railway.app/api/events`, formData, {withCredentials: true});
+            const res = await axios.post(`${API_BASE}/api/events`, formData, {withCredentials: true});
             if(res.data.success) {
                 navigate('/');
             }
@@ -31,7 +31,7 @@ const PostEvent = (props) => {
                  setErrMsg(res.data.message);
             }
         }
-    }, [eventTitle, navigate, props.user]);
+    }, [eventTitle, navigate, props.user, API_BASE]);
 
     const goBack = useCallback(() => {
         navigate('/');

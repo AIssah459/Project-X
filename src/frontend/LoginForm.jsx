@@ -12,16 +12,12 @@ const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    console.log("API_BASE:", import.meta.env.VITE_API_BASE_URL);
-    console.log(import.meta.env.VITE_API_BASE_URL);
-    console.log(API_BASE);
-
     const { setUID } = useAuth();
 
     // Function to handle form submission
     const submitFunc = useCallback(async (e) => {
         e.preventDefault();
-        const url = `https://project-x-api.up.railway.app/auth/login`;
+        const url = `${API_BASE}/auth/login`;
         const reqBody = {
             username: username,
             password: password
@@ -40,7 +36,7 @@ const LoginForm = () => {
         setUsername('');
         setPassword('');
         setResMsg(res.data.message);
-}, [navigate, username, password, setUID]);
+}, [navigate, username, password, setUID, API_BASE]);
 
     return (
         <>
