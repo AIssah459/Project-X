@@ -1,0 +1,6 @@
+name = "project-x"
+type = "javascript"
+compatibility_date = "2025-10-24"
+
+[build]
+upload = { format = "service-worker" }
