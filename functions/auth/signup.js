@@ -1,4 +1,5 @@
-export async function POST(req) {
+export async function onRequestPost(context) {
+    const req = context.request;
     const body = await req.json();
 
     const backendUrl = process.env.RAILWAY_BACKEND_URL;
