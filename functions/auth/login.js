@@ -3,6 +3,13 @@ export async function onRequestPost(context) {
     const req = context.req;
 
     console.log(req);
+
+    return new Response("Hello from Cloudflare Pages Function!", {
+    headers: {
+      "content-type": "text/plain"
+    },
+    status: 200 // OK
+  });
     // const body = await req.json();
 
     // const backendUrl = process.env.RAILWAY_BACKEND_URL;
