@@ -38,14 +38,14 @@ const EditEvent = (props) => {
 
         formData.append('id', eventToEdit.id);
 
-        const res = await axios.put(`${API_BASE}/api/events/${eventToEdit.id}`, formData, {withCredentials: true});
+        const res = await axios.put(`/api/events/${eventToEdit.id}`, formData, {withCredentials: true});
         if(res.data.success) {
             navigate('/');
         }
         else {
                 setErrMsg(res.data.message);
         }
-    }, [navigate, formData, eventTitle, eventToEdit.title, eventToEdit.id, API_BASE])
+    }, [navigate, formData, eventTitle, eventToEdit.title, eventToEdit.id])
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({multiple: false, onDrop});
     return (

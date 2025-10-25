@@ -19,7 +19,7 @@ const SignupForm = () => {
     // Function to handle form submission
     const submitFunc = async (e) => {
         e.preventDefault();
-        const url = `${API_BASE}/auth/signup`;
+        const url = `/auth/signup`;
         const reqBody = {
             username: username,
             password: password,

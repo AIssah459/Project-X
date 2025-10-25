@@ -34,7 +34,7 @@ const Profile = (props) => {
             else {
                 userToRequest = props.user;
             }
-            const res = await axios.get(`${API_BASE}/api/events`, {params: {postedBy: userToRequest}}, {withCredentials: true });
+            const res = await axios.get(`/api/events`, {params: {postedBy: userToRequest}}, {withCredentials: true });
             res.data.forEach(event => {
                 if(!eventIDs.includes(event.id) && event.postedBy == userToRequest){
                     addEventID(event.id);
@@ -47,9 +47,9 @@ const Profile = (props) => {
     }, [eventIDs, viewUser, props.user, API_BASE]);
 
      const logout = useCallback(async () => {
-        await axios.post(`${API_BASE}/auth/logout`, {username: props.user}, {withCredentials: true});
+        await axios.post(`/auth/logout`, {username: props.user}, {withCredentials: true});
         navigate('/login');
-    }, [navigate, props.user, API_BASE]);
+    }, [navigate, props.user]);
 
     
 
