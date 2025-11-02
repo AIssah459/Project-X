@@ -1,24 +1,50 @@
-export async function onRequestPost(req) {
-    const body = await req.json();
+export async function onRequest({ request, params }) {
+  const url = new URL(request.url);
 
-    const backendUrl = process.env.RAILWAY_BACKEND_URL;
+  // === CONFIG ===
+  const targetOrigin = "https://project-x-api.up.railway.app";
+  const frontendOrigin = "https://project-x-20h.pages.dev";
 
-    // Forward request to your Railway backend
-    const res = await fetch(`${backendUrl}/auth/refresh`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(body),
-        credentials: 'include'
+  // Build target URL
+  const targetUrl = `${targetOrigin}/${params.path}${url.search}`;
+
+  // Handle CORS preflight
+  if (request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": frontendOrigin,
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      },
     });
+  }
 
-    const cookie = res.headers.get('set-cookie');
-    const data = await res.json();
+  // Forward the incoming request to target
+  const modifiedRequest = new Request(targetUrl, {
+    method: request.method,
+    headers: request.headers,
+    body: ["GET", "HEAD"].includes(request.method) ? undefined : request.body,
+    redirect: "manual",
+  });
 
-    return new Response(JSON.stringify(data), {
-        status: res.status,
-        headers: {
-            'Content-Type': 'application/json',
-            'Set-Cookie': cookie || ''
-        }
-    });
+  const response = await fetch(modifiedRequest);
+
+  // Clone response headers & ensure Set-Cookie is preserved
+  const newHeaders = new Headers(response.headers);
+
+  // Cloudflare sometimes blocks multiple Set-Cookie headers; use append() if needed
+  const setCookie = response.headers.get("set-cookie");
+  if (setCookie) newHeaders.set("set-cookie", setCookie);
+
+  // --- Add CORS headers for credentials ---
+  newHeaders.set("Access-Control-Allow-Origin", frontendOrigin);
+  newHeaders.set("Access-Control-Allow-Credentials", "true");
+  newHeaders.set("Access-Control-Expose-Headers", "Set-Cookie");
+
+  return new Response(response.body, {
+    status: response.status,
+    headers: newHeaders,
+  });
 }
