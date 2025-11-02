@@ -1,6 +1,7 @@
 # Project X
 
 Full-stack webapp froject for my portfolio
+Link: https://project-x-20h.pages.dev
 
 The frontend was written with React + Vite + Bootstrap
 
@@ -9,6 +10,8 @@ The backend was written with NodeJS + Express, connected to a MongoDB database f
 #### The link for my backend source code is: https://github.com/AIssah459/Project-X-API
 
 So far it only works locally because of CORS reasons, need to find somewhere to host bost the frontend and the backend on the same domain for free :(
+### ( FINALLY DEPLOYED AS OF NOVEMBER 2 2025 :) )
+
 
 ## Features
 
