@@ -6,7 +6,7 @@ export async function onRequest({ request, params }) {
   const frontendOrigin = "https://project-x-20h.pages.dev";
 
   // Build target URL
-  const targetUrl = `${targetOrigin}/${params.path}${url.search}`;
+  const targetUrl = `${targetOrigin}/auth/refresh`;
 
   // Handle CORS preflight
   if (request.method === "OPTIONS") {
